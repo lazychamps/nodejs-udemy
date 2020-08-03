@@ -16,20 +16,30 @@ MongoClient.connect(
     const db = client.db(databaseName);
 
     db.collection("users")
-      .updateOne(
-        { name: "Mike" },
-        {
-          $inc: {
-            age: 1,
-          },
-        }
-      )
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .deleteMany({ name: "Harvey" })
+      .then(console.log)
+      .catch(console.log);
+
+    // db.collection("users")
+    //   .deleteOne({ name: "Tapan" })
+    //   .then(console.log)
+    //   .catch(console.log);
+
+    // db.collection("users")
+    //   .updateOne(
+    //     { name: "Mike" },
+    //     {
+    //       $inc: {
+    //         age: 1,
+    //       },
+    //     }
+    //   )
+    //   .then((result) => {
+    //     console.log(result);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
 
     // db.collection("users")
     //   .find({ name: "Harvey" })

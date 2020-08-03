@@ -16,13 +16,29 @@ MongoClient.connect(
     const db = client.db(databaseName);
 
     db.collection("users")
-      .find({ name: "Harvey" })
-      .count((error, count) => {
-        if (error) {
-          return console.log("Could not fetch data from database");
+      .updateOne(
+        { name: "Mike" },
+        {
+          $inc: {
+            age: 1,
+          },
         }
-        console.log(count);
+      )
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
       });
+
+    // db.collection("users")
+    //   .find({ name: "Harvey" })
+    //   .count((error, count) => {
+    //     if (error) {
+    //       return console.log("Could not fetch data from database");
+    //     }
+    //     console.log(count);
+    //   });
 
     // db.collection("users")
     //   .find({ name: "Harvey" })

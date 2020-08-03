@@ -7,18 +7,34 @@ mongoose.connect(connectionUrl, {
   useCreateIndex: true,
 });
 
-const User = mongoose.model("User", {
-  name: {
+// const User = mongoose.model("User", {
+//   name: {
+//     type: String,
+//   },
+//   age: {
+//     type: Number,
+//   },
+// });
+
+// //Valid
+// const user = new User({ name: "Harvey", age: 43 });
+// //Invalid
+// // const user = new User({ name: "Harvey", age: "age" });
+
+// user.save().then(console.log).catch(console.log);
+
+const Task = mongoose.model("Task", {
+  description: {
     type: String,
   },
-  age: {
-    type: Number,
+  completed: {
+    type: Boolean,
   },
 });
 
-//Valid
-const user = new User({ name: "Harvey", age: 43 });
-//Invalid
-// const user = new User({ name: "Harvey", age: "age" });
+const myTask = new Task({
+  description: "Learn ReactJS",
+  completed: true,
+});
 
-user.save().then(console.log).catch(console.log);
+myTask.save().then(console.log).catch(console.log);

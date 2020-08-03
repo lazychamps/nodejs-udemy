@@ -28,20 +28,44 @@ MongoClient.connect(
     //   }
     // );
 
-    db.collection("users").insertMany(
+    // db.collection("users").insertMany(
+    //   [
+    //     {
+    //       name: "Harvey",
+    //       age: 43,
+    //     },
+    //     {
+    //       name: "Mike",
+    //       age: 25,
+    //     },
+    //   ],
+    //   (error, result) => {
+    //     if (error) {
+    //       return console.log("Unable to insert user");
+    //     }
+    //     console.log(result.ops);
+    //   }
+    // );
+
+    //Challenge
+    db.collection("tasks").insertMany(
       [
         {
-          name: "Harvey",
-          age: 43,
+          description: "Learn ReactJS",
+          completed: true,
         },
         {
-          name: "Mike",
-          age: 25,
+          description: "Learn NodeJS",
+          completed: false,
+        },
+        {
+          description: "Learn Flutter",
+          completed: false,
         },
       ],
       (error, result) => {
         if (error) {
-          return console.log("Unable to insert user");
+          return console.log("Unable to insert task");
         }
         console.log(result.ops);
       }

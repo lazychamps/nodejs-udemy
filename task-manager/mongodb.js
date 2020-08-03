@@ -15,9 +15,17 @@ MongoClient.connect(
     }
 
     const db = client.db(databaseName);
-    db.collection("users").insertOne({
-      name: "Harvey",
-      age: 43,
-    });
+    db.collection("users").insertOne(
+      {
+        name: "Harvey",
+        age: 43,
+      },
+      (error, result) => {
+        if (error) {
+          return console.log("Unable to insert user");
+        }
+        console.log(result.ops);
+      }
+    );
   }
 );

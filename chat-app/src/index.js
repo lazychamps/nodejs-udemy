@@ -20,8 +20,14 @@ app.use(express.static(publicDirPath));
 io.on("connection", (socket) => {
   console.log("connected", socket.id);
 
-  socket.emit("message", generateMessages("Welcome"));
-  socket.broadcast.emit("message", `User ${socket.id} had joined`);
+  socket.on("join", ({ username, room }) => {
+    socket.join(room);
+
+    socket.emit("message", generateMessages("Welcome"));
+    socket.broadcast
+      .to(room)
+      .emit("message", generateMessages(`${username} has joined`));
+  });
 
   socket.on("sendMessage", (message, callback) => {
     const badWords = new Badwords();
@@ -35,7 +41,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    io.emit("message", `User ${socket.id} is left`);
+    io.emit("message", generateMessages(`${socket.id} has left`));
   });
 
   socket.on("sendLocation", (location, callback) => {

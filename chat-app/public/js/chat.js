@@ -11,7 +11,12 @@ socket.on("message", (message) => {
 $messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const message = $inputField.value;
-  socket.emit("sendMessage", message);
+  socket.emit("sendMessage", message, (error) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log("Message has been delivered");
+  });
 });
 
 $locationButton.addEventListener("click", (e) => {
@@ -21,6 +26,8 @@ $locationButton.addEventListener("click", (e) => {
 
   navigator.geolocation.getCurrentPosition(({ coords }) => {
     const { latitude, longitude } = coords;
-    socket.emit("sendLocation", { latitude, longitude });
+    socket.emit("sendLocation", { latitude, longitude }, () => {
+      console.log("Location has been sent!!");
+    });
   });
 });

@@ -3,6 +3,10 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const Badwords = require("bad-words");
+const {
+  generateMessages,
+  generateLocationMessages,
+} = require("./utils/messages");
 
 const app = express();
 const server = http.createServer(app);
@@ -16,7 +20,7 @@ app.use(express.static(publicDirPath));
 io.on("connection", (socket) => {
   console.log("connected", socket.id);
 
-  socket.emit("message", "Welcome");
+  socket.emit("message", generateMessages("Welcome"));
   socket.broadcast.emit("message", `User ${socket.id} had joined`);
 
   socket.on("sendMessage", (message, callback) => {
@@ -26,7 +30,7 @@ io.on("connection", (socket) => {
       return callback("Profanity is not allowed");
     }
 
-    io.emit("message", message);
+    io.emit("message", generateMessages(message));
     callback();
   });
 
@@ -34,11 +38,8 @@ io.on("connection", (socket) => {
     io.emit("message", `User ${socket.id} is left`);
   });
 
-  socket.on("sendLocation", ({ latitude, longitude }, callback) => {
-    io.emit(
-      "message",
-      `Location : http://google.com/map?q=${latitude},${longitude} `
-    );
+  socket.on("sendLocation", (location, callback) => {
+    io.emit("locationMsg", generateLocationMessages(location));
     callback();
   });
 });

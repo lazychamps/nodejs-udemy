@@ -6,6 +6,7 @@
     <title>Chat App</title>
     <link rel="icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/styles.min.css" />
+    <link rel="stylesheet" href="/css/styles.css" />
   </head>
   <body>
     <dic class="chat">
@@ -14,7 +15,7 @@
         <div id="messages" class="chat__messages"></div>
         <div class="compose">
           <form id="message-form">
-            <input name="message" type="text" placeholder="Message" />
+            <input name="message" type="text" placeholder="Message" required autocomplete="off"/>
             <button id="save-btn">Send</button>
           </form>
 

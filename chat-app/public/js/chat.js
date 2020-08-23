@@ -38,8 +38,6 @@ const autoScroll = () => {
   if (containerHeight - newMessageHeight <= scrollOffset) {
     $messages.scrollTop = $messages.scrollHeight;
   }
-
-  //
 };
 
 const getParsedTime = (time) => {

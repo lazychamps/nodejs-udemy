@@ -16,7 +16,31 @@ const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
 });
-console.log({ username, room });
+
+const autoScroll = () => {
+  // New message element
+  const $newMessage = $messages.lastElementChild;
+
+  // Height of new message
+  const newMessageStyle = getComputedStyle($newMessage);
+  const newMessageMargin = parseInt(newMessageStyle.marginBottom);
+  const newMessageHeight = $newMessage.offsetHeight + newMessageMargin;
+
+  // Visible height
+  const visibleHeight = $messages.offsetHeight;
+
+  // Height of messages of container
+  const containerHeight = $messages.scrollHeight;
+
+  // Scrolled height
+  const scrollOffset = $messages.scrollTop + visibleHeight;
+
+  if (containerHeight - newMessageHeight <= scrollOffset) {
+    $messages.scrollTop = $messages.scrollHeight;
+  }
+
+  //
+};
 
 const getParsedTime = (time) => {
   return moment(time).format("hh:mm a");
@@ -30,6 +54,7 @@ socket.on("message", ({ username, text: message, createdAt }) => {
     createdAt: getParsedTime(createdAt),
   });
   $messages.insertAdjacentHTML("beforeend", html);
+  autoScroll();
 });
 
 socket.on("locationMsg", ({ username, url, createdAt }) => {
@@ -40,6 +65,7 @@ socket.on("locationMsg", ({ username, url, createdAt }) => {
     createdAt: getParsedTime(createdAt),
   });
   $messages.insertAdjacentHTML("beforeend", html);
+  autoScroll();
 });
 
 socket.on("roomData", ({ room, users }) => {
@@ -63,6 +89,7 @@ $messageForm.addEventListener("submit", (e) => {
       return console.log(error);
     }
     console.log("Message has been delivered");
+    $messages.scrollTop = $messages.scrollHeight;
   });
 });
 
@@ -77,6 +104,7 @@ $locationButton.addEventListener("click", (e) => {
     socket.emit("sendLocation", { latitude, longitude }, () => {
       $locationButton.removeAttribute("disabled");
       console.log("Location has been sent!!");
+      $messages.scrollTop = $messages.scrollHeight;
     });
   });
 });
